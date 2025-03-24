@@ -6,6 +6,9 @@ using UnityEngine.InputSystem;
 [DefaultExecutionOrder(-2)]
 public class PlayerLocomotionInput : MonoBehaviour, PlayerControls.IPlayerLocomotionMapActions
 {
+    [SerializeField] private bool holdToSprint = true;
+
+    public bool SprintToggleOn {  get; private set; }
    public PlayerControls PlayerControls {  get; private set; }
     public Vector2 MovementInput { get; private set; }
 
@@ -38,4 +41,17 @@ public class PlayerLocomotionInput : MonoBehaviour, PlayerControls.IPlayerLocomo
     {
         LookInput = context.ReadValue<Vector2>();
     }
+
+    public void OnToggleSprint(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            SprintToggleOn = holdToSprint || !SprintToggleOn;
+        }
+        else if (context.canceled)
+        {
+            SprintToggleOn = !holdToSprint && SprintToggleOn;
+        }
+    }
+
 }
